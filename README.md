@@ -55,7 +55,13 @@ case $2 in
     awk -F',' 'NR>1 {count++} END {print "jumlah seluruh penumpang KANJ adalah " count " orang"}' $1
     ;;
   b)
-    awk -F',' 'NR>1 {g[$4]=1} END {print "Jumlah gerbong penumpang KANJ adalah " length(g)}' $1
+    awk -F',' 'NR>1 {
+    gsub(/\r/,"",$4); 
+    gsub(/^ +| +$/,"",$4); 
+    if($4!="") g[$4]=1
+} END {
+    print "Jumlah gerbong penumpang KANJ adalah " length(g)
+}' $1
     ;;
   c)
     awk -F',' 'NR>1 {if($2>max){max=$2; nama=$1}} END {print "Penumpang tertua adalah "nama" dengan usia  " max " tahun"}' $1
